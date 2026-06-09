@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xceed | Asset Return Center</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- أضف هذا السكربت في جميع صفحات HTML -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <style>
+        .form-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        body.dark-mode .form-card {
+            background: var(--gray-800);
+        }
+        
+        .form-header {
+            background: linear-gradient(135deg, #0f2b3d, #1a3d55);
+            color: white;
+            padding: 1.5rem 2rem;
+        }
+        
+        .form-header h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .form-header p {
+            margin: 0.5rem 0 0;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .form-section {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        body.dark-mode .form-section {
+            border-color: var(--gray-700);
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #334155;
+        }
+        
+        body.dark-mode .form-label {
+            color: #cbd5e1;
+        }
+        
+        .condition-group {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            padding: 0.5rem 0;
+        }
+        
+        .condition-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .condition-badge {
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .badge-matched {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .badge-mismatched {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .document-footer {
+            background: #f8fafc;
+            padding: 1rem 2rem;
+            font-size: 0.75rem;
+            color: #64748b;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        body.dark-mode .document-footer {
+            background: var(--gray-700);
+            color: #94a3b8;
+        }
+        
+        .records-table {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        body.dark-mode .records-table {
+            background: var(--gray-800);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .status-matched {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-mismatched {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .transaction-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .badge-receive {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .badge-return {
+            background: #fed7aa;
+            color: #9a3412;
+        }
+        
+        @media (max-width: 768px) {
+            .form-section {
+                padding: 1rem;
+            }
+            .form-header {
+                padding: 1rem;
+            }
+            .document-footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon">
+                    <i class="fas fa-crown"></i>
+                    <span>Xceed<span class="text-accent">Hub</span></span>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
+                    <li class="nav-item" id="ticketsNavItem"><a class="nav-link" href="tickets.html">Tickets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="links.html">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="it-general.html">IT Guide</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="exit-center.html">Exit Center</a></li>
+                </ul>
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="globalSearch" placeholder="Search..." class="search-input">
+                    </div>
+                    <button class="theme-toggle" id="darkModeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="user-menu">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle"></i> <span id="userName">Loading...</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><span class="dropdown-item-text" id="userRole">Role: User</span></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="change-password.html"><i class="fas fa-key me-1"></i> Change Password</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+        <!-- Form Container -->
+        <div class="form-container">
+            <!-- Asset Receiving & Returning Form -->
+            <div class="form-card" id="transactionForm">
+                <div class="form-header">
+                    <h2><i class="fas fa-exchange-alt me-2"></i>Asset Return & Receiving Form</h2>
+                    <p>Manage device receiving and return operations for remote work</p>
+                </div>
+                
+                <form id="assetTransactionForm">
+                    <div class="form-section">
+                        <h5 class="section-title"><i class="fas fa-user me-2"></i>Employee Information</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Employee Name *</label>
+                                <input type="text" id="employeeName" class="form-control-custom" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">National ID</label>
+                                <input type="text" id="nationalId" class="form-control-custom" placeholder="National ID / ......">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Project / Department</label>
+                                <input type="text" id="project" class="form-control-custom" placeholder="Project / ......">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Employee ID</label>
+                                <input type="text" id="employeeId" class="form-control-custom" placeholder="Employee ID / ......">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h5 class="section-title"><i class="fas fa-laptop me-2"></i>Device Information</h5>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Computer Serial</label>
+                                <input type="text" id="computerSerial" class="form-control-custom" placeholder="Computer Serial ......">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Monitor Serial</label>
+                                <input type="text" id="monitorSerial" class="form-control-custom" placeholder="Monitor Serial ......">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label">Device Model</label>
+                                <input type="text" id="deviceModel" class="form-control-custom" placeholder="Model">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Warranty Status</label>
+                                <input type="text" id="warranty" class="form-control-custom" placeholder="Warranty status">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h5 class="section-title"><i class="fas fa-clipboard-list me-2"></i>Transaction Type & Device Condition</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Transaction Type *</label>
+                                <select id="transactionType" class="form-control-custom" required>
+                                    <option value="">Select transaction type</option>
+                                    <option value="Device Receiving">📥 Device Receiving (Hand over device to employee)</option>
+                                    <option value="Device Return">📤 Device Return (Return device from employee)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Device Condition *</label>
+                                <div class="condition-group">
+                                    <label class="condition-option">
+                                        <input type="radio" name="condition" value="Matched" checked>
+                                        <span class="condition-badge badge-matched">✓ Matched delivery condition</span>
+                                    </label>
+                                    <label class="condition-option">
+                                        <input type="radio" name="condition" value="Mismatched">
+                                        <span class="condition-badge badge-mismatched">⚠ Mismatched delivery condition</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section" id="mismatchSection" style="display: none;">
+                        <h5 class="section-title"><i class="fas fa-exclamation-triangle me-2"></i>Mismatch Details</h5>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Description (In case of mismatch)</label>
+                                <textarea id="mismatchDetails" class="form-control-custom" rows="3" placeholder="Describe damages or missing parts..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h5 class="section-title"><i class="fas fa-user-check me-2"></i>IT Support Information</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">IT Support Name</label>
+                                <input type="text" id="itSupportName" class="form-control-custom" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Mobile Number</label>
+                                <input type="text" id="mobileNumber" class="form-control-custom" placeholder="Mobile Number / ......">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Additional Notes</label>
+                                <textarea id="notes" class="form-control-custom" rows="2" placeholder="Any additional notes..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-footer p-3 d-flex gap-2 justify-content-end" style="background: var(--gray-100);">
+                        <button type="button" class="btn-outline-custom" id="resetFormBtn"><i class="fas fa-undo me-1"></i>Reset Form</button>
+                        <button type="submit" class="btn-custom"><i class="fas fa-save me-1"></i>Save Transaction</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Document Footer Information -->
+            <div class="document-footer">
+                <div><i class="fas fa-code me-1"></i> Document Code: AD-RP-13-01</div>
+                <div><i class="fas fa-file-alt me-1"></i> Document Type: Internal</div>
+                <div><i class="fas fa-calendar me-1"></i> Document Date: 28/02/2021</div>
+                <div><i class="fas fa-check-circle me-1"></i> Document Status: Final</div>
+                <div><i class="fas fa-file-pdf me-1"></i> Page 1 of 1</div>
+            </div>
+        </div>
+        
+        <!-- Transaction Records -->
+        <div class="form-card records-table mt-4">
+            <div class="form-header" style="background: var(--accent);">
+                <h2><i class="fas fa-history me-2"></i>Transaction Records</h2>
+                <p>All device receiving and return transactions</p>
+            </div>
+            <div class="p-3">
+                <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                    <div class="d-flex gap-2">
+                        <button class="btn-outline-custom btn-sm" id="exportRecordsBtn">
+                            <i class="fas fa-download me-1"></i> Export CSV
+                        </button>
+                        <select id="filterType" class="form-control-custom form-control-sm" style="width: 150px;">
+                            <option value="all">All</option>
+                            <option value="Device Receiving">📥 Receiving</option>
+                            <option value="Device Return">📤 Return</option>
+                        </select>
+                    </div>
+                    <input type="text" id="searchRecords" class="form-control-custom form-control-sm" placeholder="Search..." style="width: 200px;">
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Employee</th>
+                                <th>Project</th>
+                                <th>Transaction</th>
+                                <th>Device Serial</th>
+                                <th>Condition</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsTableBody">
+                            <tr><td colspan="8" class="text-center py-4 text-muted">Loading transactions...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-5">
+        <div class="container">
+            <p>© 2025 Xceed Enterprise Help Desk Hub | Asset Return Management System</p>
+        </div>
+    </footer>
+
+    <!-- Details Modal -->
+    <div class="modal fade" id="detailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5><i class="fas fa-file-alt text-accent me-2"></i>Transaction Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="detailsModalBody"></div>
+                <div class="modal-footer border-0">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastMsg" class="toast-notify"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts -->
+    <script src="js/supabase-config.js"></script>
+    <script src="js/supabase-auth.js"></script>
+    <script src="js/supabase-tickets.js"></script>
+    <script src="js/supabase-assets.js"></script>
+    <script src="js/script.js"></script>
+  // في صفحة exit-center.html، استبدال قسم Asset System بالكود التالي:
+
+<script>
+    // ============================================
+    // ASSET RECEIVING & RETURNING SYSTEM - SUPABASE
+    // ============================================
+    
+    let deleteRecordId = null;
+    
+    function showToast(msg, isError) {
+        let toast = document.getElementById('toastMsg');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.className = 'toast-notify';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = msg;
+        toast.style.background = isError ? '#ef4444' : '#10b981';
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 2500);
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+    
+    async function renderRecordsTable() {
+        const searchTerm = document.getElementById('searchRecords')?.value?.toLowerCase() || '';
+        const filterType = document.getElementById('filterType')?.value || 'all';
+        
+        let records = [];
+        try {
+            records = await getAllTransactions();
+            records.sort((a, b) => new Date(b.date) - new Date(a.date));
+        } catch(e) { 
+            console.error('Error loading transactions:', e);
+            records = []; 
+        }
+        
+        let filtered = records.filter(r => {
+            if (filterType !== 'all' && r.transactionType !== filterType) return false;
+            if (searchTerm) {
+                return (r.employeeName && r.employeeName.toLowerCase().includes(searchTerm)) ||
+                       (r.computerSerial && r.computerSerial.toLowerCase().includes(searchTerm)) ||
+                       (r.project && r.project.toLowerCase().includes(searchTerm));
+            }
+            return true;
+        });
+        
+        const tbody = document.getElementById('recordsTableBody');
+        if (!tbody) return;
+        
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4">No transactions found</td></tr>';
+            return;
+        }
+        
+        tbody.innerHTML = filtered.map(r => `
+            <tr>
+                <td>${r.id}</td>
+                <td><strong>${escapeHtml(r.employeeName)}</strong><br><small class="text-muted">${escapeHtml(r.nationalId || '')}</small></td>
+                <td>${escapeHtml(r.project || '—')}</td>
+                <td><span class="transaction-badge ${r.transactionType === 'Device Receiving' ? 'badge-receive' : 'badge-return'}">${r.transactionType === 'Device Receiving' ? '📥 Receiving' : '📤 Return'}</span></td>
+                <td><code>${escapeHtml(r.computerSerial || '—')}</code></td>
+                <td><span class="status-badge ${r.condition === 'Matched' ? 'status-matched' : 'status-mismatched'}">${r.condition === 'Matched' ? '✓ Matched' : '⚠ Mismatched'}</span></td>
+                <td>${r.date ? new Date(r.date).toLocaleDateString() : '-'}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-custom view-record" data-id="${r.id}"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-sm btn-outline-danger delete-record" data-id="${r.id}"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            </tr>
+        `).join('');
+        
+        document.querySelectorAll('.view-record').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = parseInt(btn.dataset.id);
+                const records = await getAllTransactions();
+                const record = records.find(r => r.id === id);
+                if (record) showDetailsModal(record);
+            });
+        });
+        
+        document.querySelectorAll('.delete-record').forEach(btn => {
+            btn.addEventListener('click', () => {
+                deleteRecordId = parseInt(btn.dataset.id);
+                if (confirm('Are you sure you want to delete this transaction?')) {
+                    deleteTransaction(deleteRecordId).then(() => {
+                        renderRecordsTable();
+                        showToast('Transaction deleted successfully');
+                    }).catch(err => {
+                        showToast('Error deleting transaction', true);
+                    });
+                }
+            });
+        });
+    }
+    
+    function showDetailsModal(record) {
+        const modalBody = document.getElementById('detailsModalBody');
+        modalBody.innerHTML = `
+            <div class="row g-3">
+                <div class="col-md-6"><strong>Employee:</strong> ${escapeHtml(record.employeeName)}</div>
+                <div class="col-md-6"><strong>National ID:</strong> ${escapeHtml(record.nationalId || '—')}</div>
+                <div class="col-md-6"><strong>Project:</strong> ${escapeHtml(record.project || '—')}</div>
+                <div class="col-md-6"><strong>Employee ID:</strong> ${escapeHtml(record.employeeId || '—')}</div>
+                <div class="col-12"><hr></div>
+                <div class="col-md-4"><strong>Computer Serial:</strong> <code>${escapeHtml(record.computerSerial || '—')}</code></div>
+                <div class="col-md-4"><strong>Monitor Serial:</strong> <code>${escapeHtml(record.monitorSerial || '—')}</code></div>
+                <div class="col-md-4"><strong>Accessory Serial:</strong> <code>${escapeHtml(record.accessorySerial || '—')}</code></div>
+                <div class="col-md-6"><strong>Device Model:</strong> ${escapeHtml(record.deviceModel || '—')}</div>
+                <div class="col-md-6"><strong>Warranty:</strong> ${escapeHtml(record.warranty || '—')}</div>
+                <div class="col-12"><hr></div>
+                <div class="col-md-6"><strong>Transaction Type:</strong> ${record.transactionType === 'Device Receiving' ? '📥 Device Receiving' : '📤 Device Return'}</div>
+                <div class="col-md-6"><strong>Device Condition:</strong> <span class="status-badge ${record.condition === 'Matched' ? 'status-matched' : 'status-mismatched'}">${record.condition === 'Matched' ? '✓ Matched' : '⚠ Mismatched'}</span></div>
+                ${record.mismatchDetails ? `<div class="col-12"><strong class="text-danger">Mismatch Details:</strong><br>${escapeHtml(record.mismatchDetails)}</div>` : ''}
+                <div class="col-12"><hr></div>
+                <div class="col-md-6"><strong>IT Support:</strong> ${escapeHtml(record.itSupportName || '—')}</div>
+                <div class="col-md-6"><strong>Mobile:</strong> ${escapeHtml(record.mobileNumber || '—')}</div>
+                <div class="col-12"><strong>Notes:</strong> ${escapeHtml(record.notes || '—')}</div>
+                <div class="col-12"><strong>Transaction Date:</strong> ${record.date ? new Date(record.date).toLocaleString() : '-'}</div>
+            </div>
+        `;
+        new bootstrap.Modal(document.getElementById('detailsModal')).show();
+    }
+    
+    // Handle form submit
+    document.getElementById('assetTransactionForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const conditionRadio = document.querySelector('input[name="condition"]:checked');
+        const condition = conditionRadio ? conditionRadio.value : 'Matched';
+        
+        const record = {
+            employeeName: document.getElementById('employeeName').value,
+            nationalId: document.getElementById('nationalId').value,
+            project: document.getElementById('project').value,
+            employeeId: document.getElementById('employeeId').value,
+            computerSerial: document.getElementById('computerSerial').value,
+            monitorSerial: document.getElementById('monitorSerial').value,
+            accessorySerial: document.getElementById('accessorySerial').value,
+            deviceModel: document.getElementById('deviceModel').value,
+            warranty: document.getElementById('warranty').value,
+            transactionType: document.getElementById('transactionType').value,
+            condition: condition,
+            mismatchDetails: condition === 'Mismatched' ? document.getElementById('mismatchDetails').value : '',
+            itSupportName: document.getElementById('itSupportName').value,
+            mobileNumber: document.getElementById('mobileNumber').value,
+            notes: document.getElementById('notes').value,
+            date: new Date().toISOString()
+        };
+        
+        if (!record.employeeName || !record.transactionType) {
+            showToast('Please enter employee name and transaction type', true);
+            return;
+        }
+        
+        try {
+            await saveTransaction(record);
+            showToast('Transaction saved successfully');
+            document.getElementById('assetTransactionForm').reset();
+            document.querySelector('input[name="condition"][value="Matched"]').checked = true;
+            document.getElementById('mismatchSection').style.display = 'none';
+            await renderRecordsTable();
+        } catch(error) {
+            console.error('Save error:', error);
+            showToast('Error saving transaction', true);
+        }
+    });
+    
+    // Toggle mismatch section
+    document.querySelectorAll('input[name="condition"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            const mismatchSection = document.getElementById('mismatchSection');
+            if (document.querySelector('input[name="condition"]:checked')?.value === 'Mismatched') {
+                mismatchSection.style.display = 'block';
+            } else {
+                mismatchSection.style.display = 'none';
+            }
+        });
+    });
+    
+    // Set IT support name from logged in user
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+        const itSupportInput = document.getElementById('itSupportName');
+        if (itSupportInput) itSupportInput.value = currentUser.name || currentUser.username;
+        const userNameSpan = document.getElementById('userName');
+        if (userNameSpan) userNameSpan.textContent = currentUser.name || currentUser.username;
+    }
+    
+    // Reset button
+    document.getElementById('resetFormBtn')?.addEventListener('click', () => {
+        document.getElementById('assetTransactionForm').reset();
+        document.querySelector('input[name="condition"][value="Matched"]').checked = true;
+        document.getElementById('mismatchSection').style.display = 'none';
+    });
+    
+    // Export button
+    document.getElementById('exportRecordsBtn')?.addEventListener('click', async () => {
+        const records = await getAllTransactions();
+        if (records.length === 0) { showToast('No data to export', true); return; }
+        const headers = ["ID", "Employee", "National ID", "Project", "Employee ID", "Computer SN", "Monitor SN", "Accessory SN", "Model", "Warranty", "Transaction Type", "Condition", "Mismatch Details", "IT Support", "Mobile", "Notes", "Date"];
+        const rows = [headers];
+        for (let r of records) {
+            rows.push([r.id, r.employeeName, r.nationalId, r.project, r.employeeId, r.computerSerial, r.monitorSerial, r.accessorySerial, r.deviceModel, r.warranty, r.transactionType, r.condition, r.mismatchDetails, r.itSupportName, r.mobileNumber, r.notes, r.date]);
+        }
+        let csv = rows.map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(",")).join("\n");
+        const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `asset_transactions_${Date.now()}.csv`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast('Export completed successfully');
+    });
+    
+    // Filter and search
+    document.getElementById('filterType')?.addEventListener('change', () => renderRecordsTable());
+    document.getElementById('searchRecords')?.addEventListener('input', () => renderRecordsTable());
+    
+    // Initialize
+    renderRecordsTable();
+</script>
+</body>
+</html>

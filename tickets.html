@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xceed | Ticket Management Studio</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- أضف هذا السكربت في جميع صفحات HTML -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+</head>
+<body>
+   <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon">
+                    <i class="fas fa-crown"></i>
+                    <span>Xceed<span class="text-accent">Hub</span></span>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
+                    <li class="nav-item " id="ticketsNavItem "><a class="nav-link active" href="tickets.html">Tickets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="links.html">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="it-general.html">IT Guide</a></li>
+                    <li class="nav-item"><a class="nav-link " href="exit-center.html">Exit Center</a></li>
+                </ul>
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="globalSearch" placeholder="Search..." class="search-input">
+                    </div>
+                    <button class="theme-toggle" id="darkModeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="user-menu">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle"></i> <span id="userName">Loading...</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><span class="dropdown-item-text" id="userRole">Role: User</span></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="change-password.html"><i class="fas fa-key me-1"></i> Change Password</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <main class="container py-4">
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-scroll"></i>
+                <div class="stat-value" id="totalScriptsCount">12</div>
+                <div class="text-muted">Ready Scripts</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-ticket-alt"></i>
+                <div class="stat-value" id="totalTicketsCount">0</div>
+                <div class="text-muted">Total Tickets</div>
+            </div>
+           
+        </div>
+
+        <div class="row g-4">
+            <!-- Scripts Library -->
+            <div class="col-lg-5">
+                <div class="card h-100">
+                    <div class="card-header bg-white border-0 pt-3">
+                        <h5 class="mb-0"><i class="fas fa-scroll text-accent me-2"></i>Quick Scripts Library</h5>
+                        <p class="text-muted small mt-1">Click any script to auto-fill the form</p>
+                    </div>
+                    <div class="card-body">
+                        <input type="text" id="searchScripts" class="form-control-custom mb-3" placeholder="Filter scripts...">
+                        <div id="scriptsContainer" class="scripts-panel">
+                            <div class="text-center py-4 text-muted">Loading scripts...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ticket Form -->
+            <div class="col-lg-7">
+                <div class="card mb-4">
+                    <div class="card-header bg-white border-0 pt-3">
+                        <h5 class="mb-0"><i class="fas fa-pen-fancy text-accent me-2"></i>Ticket Composer</h5>
+                        <p class="text-muted small mt-1">Fill the form and save to IndexedDB</p>
+                    </div>
+                    <div class="card-body">
+                        <form id="ticketForm">
+                            <input type="hidden" id="ticketId">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Ticket Type *</label>
+                                    <select id="ticketType" class="form-control-custom" required>
+                                        <option value="">Select type</option>
+                                        <option value="Access">🔑 Access Request</option>
+                                        <option value="Avaya">📞 Avaya Issue</option>
+                                        <option value="Network">🌐 Network Issue</option>
+                                        <option value="Cisco">📱 Cisco Issue</option>
+                                        <option value="Hardware">💻 Hardware Change</option>
+                                        <option value="VPN">🔒 VPN Request</option>
+                                        <option value="Other">📝 Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Status</label>
+                                    <select id="ticketStatus" class="form-control-custom">
+                                        <option value="Open">🟢 Open</option>
+                                        <option value="In Progress">🟡 In Progress</option>
+                                        <option value="Resolved">🔵 Resolved</option>
+                                        <option value="Closed">⚫ Closed</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Title *</label>
+                                    <input type="text" id="ticketTitle" class="form-control-custom" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Requester *</label>
+                                    <input type="text" id="requesterName" class="form-control-custom" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Contact</label>
+                                    <input type="text" id="requesterContact" class="form-control-custom">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Line Manager</label>
+                                    <input type="text" id="lineManager" class="form-control-custom">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Description *</label>
+                                    <textarea id="description" class="form-control-custom" rows="3" required></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Additional Data</label>
+                                    <textarea id="additionalData" class="form-control-custom" rows="2" placeholder="MAC, Extension, URL, etc..."></textarea>
+                                </div>
+                                <div class="col-12 d-flex gap-2">
+                                    <button type="button" class="btn-custom flex-grow-1" id="saveTicketBtn">
+                                        <i class="fas fa-save me-2"></i>Save to IndexedDB
+                                    </button>
+                                    <button type="button" class="btn-outline-custom" id="clearFormBtn">
+                                        <i class="fas fa-eraser"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tickets Table -->
+                <div class="card">
+                    <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center flex-wrap">
+                        <h5 class="mb-0"><i class="fas fa-database text-accent me-2"></i>Ticket Vault</h5>
+                        <div class="d-flex gap-2 mt-2 mt-sm-0">
+                            <button class="btn-custom btn-sm" id="copyToClipboardBtn">
+                                <i class="fas fa-copy me-1"></i> Copy All
+                            </button>
+                            <button class="btn-outline-custom btn-sm" id="exportCsvBtn">
+                                <i class="fas fa-download me-1"></i> CSV
+                            </button>
+                            <input type="text" id="searchTickets" class="form-control-custom form-control-sm" placeholder="Search..." style="width: 150px;">
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="ticket-table-container">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th><th>Type</th><th>Title</th><th>Requester</th><th>Status</th><th>Date</th><th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ticketsTableBody">
+                                    <tr><td colspan="7" class="text-center py-4 text-muted">Loading tickets...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-5">
+        <div class="container">
+            <p>© 2025 Xceed Enterprise Help Desk Hub | Ticket Management System</p>
+        </div>
+    </footer>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title"><i class="fas fa-trash-alt text-danger me-2"></i>Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">Are you sure you want to permanently delete this ticket?</div>
+                <div class="modal-footer border-0">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastMsg" class="toast-notify"></div>
+    <!-- أضف هذا السكربت في جميع صفحات HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts -->
+    <script src="js/supabase-config.js"></script>
+    <script src="js/supabase-auth.js"></script>
+    <script src="js/supabase-tickets.js"></script>
+    <script src="js/supabase-assets.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

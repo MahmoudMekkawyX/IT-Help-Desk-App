@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xceed | Resource Links</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- أضف هذا السكربت في جميع صفحات HTML -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon">
+                    <i class="fas fa-crown"></i>
+                    <span>Xceed<span class="text-accent">Hub</span></span>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
+                    <li class="nav-item" id="ticketsNavItem"><a class="nav-link" href="tickets.html">Tickets</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="links.html">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="it-general.html">IT Guide</a></li>
+                    <li class="nav-item"><a class="nav-link " href="exit-center.html">Exit Center</a></li>
+                </ul>
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="globalSearch" placeholder="Search..." class="search-input">
+                    </div>
+                    <button class="theme-toggle" id="darkModeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="user-menu">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle"></i> <span id="userName">Loading...</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><span class="dropdown-item-text" id="userRole">Role: User</span></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="change-password.html"><i class="fas fa-key me-1"></i> Change Password</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+        <div class="section-header text-start mb-4">
+            <h2>Resource Links</h2>
+            <p>Quick access to essential tools and portals</p>
+        </div>
+
+        <div class="links-grid">
+            <!-- Service Desk Portal -->
+            <div class="link-card">
+                <div class="link-card-header teal">
+                    <i class="fas fa-headset"></i> Service Desk Portal
+                </div>
+                <ul class="link-list">
+                    <li><a href="https://maca-whd-010p:8443/CAisd/pdmweb.exe" target="_blank"><i class="fas fa-external-link-alt"></i> Service Desk Portal</a></li>
+                    <li><a href="https://sharepoint.xceedcc.com/xceedcc/SF/ITSO/IT/Laptops%20Ram%20upgrading/Forms/AllItems.aspx" target="_blank"><i class="fas fa-microchip"></i> Vendor & Upgrading</a></li>
+                    <li><a href="https://sharepoint.xceedcc.com/sites/sd/CCS/DS/Reporting/Contact%20Center%20Staff/Forms/AllItems.aspx" target="_blank"><i class="fas fa-chart-line"></i> Weekly KPIs</a></li>
+                </ul>
+            </div>
+
+            <!-- Cisco Finesse -->
+            <div class="link-card">
+                <div class="link-card-header indigo">
+                    <i class="fas fa-phone"></i> Cisco Finesse
+                </div>
+                <ul class="link-list">
+                    <li><a href="https://xcd-sv-fin1a.masreya.local/desktop/container/?locale=en_US" target="_blank"><i class="fas fa-map-marker-alt"></i> Smart Village</a></li>
+                    <li><a href="https://xcd-md-fin1b.masreya.local:8445/desktop/container/?locale=en_US" target="_blank"><i class="fas fa-map-marker-alt"></i> Maadi</a></li>
+                </ul>
+            </div>
+
+            <!-- SharePoint & Printers -->
+            <div class="link-card">
+                <div class="link-card-header coral">
+                    <i class="fas fa-folder-open"></i> SharePoint & Printers
+                </div>
+                <ul class="link-list">
+                    <li><a href="https://sharepoint.xceedcc.com/xceedcc/SF/ITSO/HD/_layouts/15/WopiFrame.aspx?sourcedoc=%7BA43E8A2F-E58D-4006-8616-085D98373E35%7D&file=Xceed%20Printers.xlsx&action=default" target="_blank"><i class="fas fa-print"></i> Printers Inventory</a></li>
+                    <li><a href="https://my.anydesk.com/v2/" target="_blank"><i class="fas fa-desktop"></i> AnyDesk</a></li>
+                    <li><a href="https://erpdevelopmenttest6.intranet.masreya.local/WFHAssets_Approval/Approval" target="_blank"><i class="fas fa-home"></i> WFH Assets Application</a></li>
+                </ul>
+            </div>
+
+            <!-- Vendor Support -->
+            <div class="link-card">
+                <div class="link-card-header teal">
+                    <i class="fas fa-tools"></i> Vendor Support
+                </div>
+                <div class="vendor-grid">
+                    <a href="https://support.lenovo.com/us/en/" target="_blank" class="vendor-item"><span class="vendor-name">Lenovo</span><i class="fas fa-external-link-alt"></i></a>
+                    <a href="https://www.dell.com/support/home/en-us" target="_blank" class="vendor-item"><span class="vendor-name">Dell</span><i class="fas fa-external-link-alt"></i></a>
+                    <a href="https://support.hp.com/us-en" target="_blank" class="vendor-item"><span class="vendor-name">HP</span><i class="fas fa-external-link-alt"></i></a>
+                    <a href="https://consumer.huawei.com/en/support/" target="_blank" class="vendor-item"><span class="vendor-name">Huawei</span><i class="fas fa-external-link-alt"></i></a>
+                    <a href="https://support.apple.com/" target="_blank" class="vendor-item"><span class="vendor-name">Apple</span><i class="fas fa-external-link-alt"></i></a>
+                    <a href="https://en.canon-me.com/support/" target="_blank" class="vendor-item"><span class="vendor-name">Canon</span><i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </div>
+
+            <!-- Vendor Contacts Table -->
+            <div class="link-card">
+                <div class="link-card-header indigo">
+                    <i class="fas fa-phone-alt"></i> Vendor Contacts
+                </div>
+                <div class="vendor-grid">
+                    <div class="vendor-item"><span class="vendor-name">Eng. Hany Es7a2</span><span class="vendor-phone">01116660019</span></div>
+                    <div class="vendor-item"><span class="vendor-name">Eng. Milad</span><span class="vendor-phone">01144146205</span></div>
+                    <div class="vendor-item"><span class="vendor-name">Hotline</span><span class="vendor-phone">33045457</span></div>
+                    <div class="vendor-item"><span class="vendor-name">Christen (Printy)</span><span class="vendor-phone">01221215035</span></div>
+                    <div class="vendor-item"><span class="vendor-name">Milad (Printy)</span><span class="vendor-phone">01008967696</span></div>
+                    <div class="vendor-item"><span class="vendor-name">Customer Services</span><span class="vendor-phone">01200155006</span></div>
+                    <div class="vendor-item"><span class="vendor-name">Eng. Gerges</span><span class="vendor-phone">01224728157</span></div>
+                </div>
+            </div>
+
+            <!-- Mail Templates -->
+            <div class="link-card">
+                <div class="link-card-header coral">
+                    <i class="fas fa-envelope"></i> Mail Templates
+                </div>
+                <ul class="link-list">
+                    <li><a href="\\compstor\Company\HelpDesk\New folder (2)\Aux Break Updates.msg"><i class="fas fa-coffee"></i> Aux Break</a></li>
+                    <li><a href="https://sharepoint.xceedcc.com/xceedcc/SF/ITSO/HD/Help%20Desk%20Mail%20Templates/SERVICE%20DESK%20INCIDENT%20Awaiting%20User%20Response.oft" target="_blank"><i class="fas fa-hourglass-half"></i> Awaiting End User</a></li>
+                    <li><a href="https://sharepoint.xceedcc.com/xceedcc/SF/ITSO/HD/Help%20Desk%20Mail%20Templates/SERVICE%20DESK%20INCIDENT%20Confirmation.oft" target="_blank"><i class="fas fa-check-circle"></i> Confirmation</a></li>
+                    <li><a href="\\compstor\company\helpdesk\Global Technology"><i class="fas fa-folder"></i> Global Tech (GT)</a></li>
+                    <li><a href="\\compstor\Company\HelpDesk\IT Help Desk\New folder\Windows Commands .pdf"><i class="fas fa-terminal"></i> CMD Commands</a></li>
+                </ul>
+            </div>
+
+            <!-- Service Desk Guidelines -->
+            <div class="link-card">
+                <div class="link-card-header teal">
+                    <i class="fas fa-clipboard-list"></i> Service Desk Guidelines
+                </div>
+                <ul class="link-list">
+                    <li><a href="file://compstor/Company/HelpDesk/Users%20Permission%20For%20Creating%20Incidents"><i class="fas fa-folder-open"></i> Open HelpDesk Folder</a></li>
+                    <li><a href="#" onclick="return false;"><i class="fas fa-check-circle"></i> Document troubleshooting steps</a></li>
+                    <li><a href="#" onclick="return false;"><i class="fas fa-chart-line"></i> Escalation: Sun-Thu, 08:00-16:00</a></li>
+                    <li><a href="\\10.47.0.95\source$\Knowledge Share Mails files and archive\Knowledge Share video\Acronis True Image recovery by khalifa.mp4" target="_blank"><i class="fas fa-video"></i> Acronis Image Deployment</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-5">
+        <div class="container">
+            <p>© 2025 Xceed Enterprise Help Desk Hub | All links updated regularly</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Scripts -->
+    <script src="js/supabase-config.js"></script>
+    <script src="js/supabase-auth.js"></script>
+    <script src="js/supabase-tickets.js"></script>
+    <script src="js/supabase-assets.js"></script>
+    <script src="js/script.js"></script></body>
+</html>

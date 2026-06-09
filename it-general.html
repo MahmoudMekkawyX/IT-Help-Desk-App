@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xceed | IT General Guide</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- أضف هذا السكربت في جميع صفحات HTML -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+   
+</head>
+<body>
+ <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon">
+                    <i class="fas fa-crown"></i>
+                    <span>Xceed<span class="text-accent">Hub</span></span>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
+                    <li class="nav-item" id="ticketsNavItem"><a class="nav-link" href="tickets.html">Tickets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="links.html">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="it-general.html">IT Guide</a></li>
+                    <li class="nav-item"><a class="nav-link " href="exit-center.html">Exit Center</a></li>
+                </ul>
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="globalSearch" placeholder="Search..." class="search-input">
+                    </div>
+                    <button class="theme-toggle" id="darkModeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="user-menu">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle"></i> <span id="userName">Loading...</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><span class="dropdown-item-text" id="userRole">Role: User</span></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="change-password.html"><i class="fas fa-key me-1"></i> Change Password</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+        <div class="section-header text-start mb-4">
+            <h2>IT General Guide</h2>
+            <p>Solutions for daily IT problems and technical support</p>
+        </div>
+
+        <div class="guides-grid">
+            <!-- Windows Setup -->
+            <div class="guide-card">
+                <div class="guide-header">
+                    <i class="fab fa-windows text-accent"></i> Windows Image Setup
+                </div>
+                <div class="guide-body">
+                    <div class="accordion accordion-custom" id="windowsAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#winStep1">
+                                    1. Prepare USB Drive
+                                </button>
+                            </h2>
+                            <div id="winStep1" class="accordion-collapse collapse" data-bs-parent="#windowsAccordion">
+                                <div class="accordion-body">
+                                    <ul class="guide-list">
+                                        <li><i class="fas fa-check"></i> Use Rufus or Windows Media Creation Tool</li>
+                                        <li><i class="fas fa-check"></i> USB drive at least 8 GB</li>
+                                        <li><i class="fas fa-check"></i> Choose appropriate ISO (Windows 10/11 Pro)</li>
+                                        <li><i class="fas fa-check"></i> GPT for UEFI / MBR for Legacy</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#winStep2">
+                                    2. Install Windows
+                                </button>
+                            </h2>
+                            <div id="winStep2" class="accordion-collapse collapse" data-bs-parent="#windowsAccordion">
+                                <div class="accordion-body">
+                                    <ul class="guide-list">
+                                        <li><i class="fas fa-check"></i> Boot from USB (F12, ESC, Del)</li>
+                                        <li><i class="fas fa-check"></i> Choose Custom: Install Windows only</li>
+                                        <li><i class="fas fa-check"></i> Delete all partitions</li>
+                                        <li><i class="fas fa-check"></i> Select Unallocated Space and press Next</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#winStep3">
+                                    3. After Installation
+                                </button>
+                            </h2>
+                            <div id="winStep3" class="accordion-collapse collapse" data-bs-parent="#windowsAccordion">
+                                <div class="accordion-body">
+                                    <ul class="guide-list">
+                                        <li><i class="fas fa-check"></i> Check Drivers</li>
+                                        <li><i class="fas fa-check"></i> Run Windows Update</li>
+                                        <li><i class="fas fa-check"></i> Install apps: Office, Company Portal, AnyDesk</li>
+                                        <li><i class="fas fa-check"></i> Join Domain if required</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Issues -->
+            <div class="guide-card">
+                <div class="guide-header">
+                    <i class="fas fa-tachometer-alt text-accent"></i> Performance Issues
+                </div>
+                <div class="guide-body">
+                    <ul class="guide-list">
+                        <li><i class="fas fa-memory"></i> <strong>RAM:</strong> If 90%+, needs upgrade</li>
+                        <li><i class="fas fa-hdd"></i> <strong>HDD:</strong> Upgrade to SSD is fastest fix</li>
+                        <li><i class="fas fa-microchip"></i> <strong>CPU:</strong> Check what's consuming processor</li>
+                        <li><i class="fas fa-database"></i> <strong>Storage:</strong> Clear %temp% and empty recycle bin</li>
+                        <li><i class="fas fa-power-off"></i> <strong>Restart:</strong> Fixes 80% of problems</li>
+                    </ul>
+                    <div class="tips-grid">
+                        <div class="tip-item">
+                            <i class="fas fa-chart-line"></i>
+                            <h6>Task Manager</h6>
+                            <p>Ctrl + Shift + Esc</p>
+                        </div>
+                        <div class="tip-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <h6>Performance Monitor</h6>
+                            <p>perfmon /res</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Computer Not Powering On -->
+            <div class="guide-card">
+                <div class="guide-header">
+                    <i class="fas fa-exclamation-triangle text-accent"></i> Computer Not Working
+                </div>
+                <div class="guide-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h6 class="fw-bold"><i class="fas fa-plug"></i> Power Issues:</h6>
+                            <ul class="guide-list">
+                                <li><i class="fas fa-check"></i> Check cable</li>
+                                <li><i class="fas fa-check"></i> Try another socket</li>
+                                <li><i class="fas fa-check"></i> Remove battery 30 seconds</li>
+                                <li><i class="fas fa-check"></i> Try different power adapter</li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="fw-bold"><i class="fas fa-desktop"></i> Boot Issues:</h6>
+                            <ul class="guide-list">
+                                <li><i class="fas fa-check"></i> Try external monitor</li>
+                                <li><i class="fas fa-check"></i> Listen for beep sounds</li>
+                                <li><i class="fas fa-check"></i> Try Safe Mode</li>
+                                <li><i class="fas fa-check"></i> Clean RAM modules</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Headset Issues -->
+            <div class="guide-card">
+                <div class="guide-header">
+                    <i class="fas fa-headphones text-accent"></i> Headset Issues
+                </div>
+                <div class="guide-body">
+                    <ul class="guide-list">
+                        <li><i class="fas fa-check"></i> Check if not muted</li>
+                        <li><i class="fas fa-check"></i> Verify in Playback devices</li>
+                        <li><i class="fas fa-check"></i> Try different USB port</li>
+                        <li><i class="fas fa-check"></i> Test on your phone</li>
+                        <li><i class="fas fa-check"></i> Update/Rollback driver</li>
+                    </ul>
+                    <div class="tips-grid mt-2">
+                        <div class="tip-item">
+                            <i class="fas fa-volume-up"></i>
+                            <h6>Audio Troubleshooter</h6>
+                            <p>Settings → System → Sound</p>
+                        </div>
+                        <div class="tip-item">
+                            <i class="fas fa-sliders-h"></i>
+                            <h6>Sound Control Panel</h6>
+                            <p>mmsys.cpl</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Desk Guidelines Section -->
+        <div class="mt-5">
+            <div class="section-header text-start mb-4">
+                <h3>Service Desk Guidelines</h3>
+                <p>Standard operating procedures</p>
+            </div>
+            <div class="guides-grid">
+                <div class="guide-card">
+                    <div class="guide-header"><i class="fas fa-exclamation-circle"></i> Reported Incidents</div>
+                    <div class="guide-body">
+                        <ul class="guide-list">
+                            <li><i class="fas fa-folder-open"></i> <a href="file://compstor/Company/HelpDesk/Users%20Permission%20For%20Creating%20Incidents">Open HelpDesk folder</a></li>
+                            <li><i class="fas fa-check"></i> Select correct category and write clear description</li>
+                            <li><i class="fas fa-clock"></i> Follow up daily on transferred incidents</li>
+                            <li><i class="fas fa-user-check"></i> Manager approval for hardware changes</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="guide-card">
+                    <div class="guide-header"><i class="fas fa-check-double"></i> Closed Incidents</div>
+                    <div class="guide-body">
+                        <ul class="guide-list">
+                            <li><i class="fas fa-clipboard-list"></i> Document full troubleshooting steps</li>
+                            <li><i class="fas fa-check"></i> If resolved without action: <strong>Solved with No Action Taken</strong></li>
+                            <li><i class="fas fa-exchange-alt"></i> Select appropriate transferred area</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="guide-card">
+                    <div class="guide-header"><i class="fas fa-chart-line"></i> Escalation Rules</div>
+                    <div class="guide-body">
+                        <ul class="guide-list">
+                            <li><i class="fas fa-calendar-week"></i> Window: Sun-Thu, 08:00-16:00</li>
+                            <li><i class="fas fa-hourglass-half"></i> Set status to Awaiting Vendor</li>
+                            <li><i class="fas fa-info-circle"></i> Include: serial, model, issue, dates, user details</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="guide-card">
+                    <div class="guide-header"><i class="fas fa-sync-alt"></i> Device Cycles</div>
+                    <div class="guide-body">
+                        <ul class="guide-list">
+                            <li><i class="fas fa-box"></i> <strong>Cycle 1:</strong> Preparation - Obtain approvals</li>
+                            <li><i class="fas fa-truck"></i> <strong>Cycle 2:</strong> Moving & Tracking - Label devices</li>
+                            <li><i class="fas fa-clipboard"></i> <strong>Cycle 3:</strong> Receipt - Verify and sign-off</li>
+                        </ul>
+                        <a href="\\10.47.0.95\source$\Knowledge Share Mails files and archive\Knowledge Share video\Acronis True Image recovery by khalifa.mp4" target="_blank" class="btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 mt-2">
+                            <i class="fas fa-video"></i> Acronis Image Deployment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="index.html" class="btn-outline-custom">
+                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </main>
+
+    <footer class="mt-5">
+        <div class="container">
+            <p>© 2025 Xceed Enterprise Help Desk Hub | IT General Guide</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Scripts -->
+    <script src="js/supabase-config.js"></script>
+    <script src="js/supabase-auth.js"></script>
+    <script src="js/supabase-tickets.js"></script>
+    <script src="js/supabase-assets.js"></script>
+    <script src="js/script.js"></script></body>
+</html>

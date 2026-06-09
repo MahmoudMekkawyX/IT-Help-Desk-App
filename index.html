@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xceed | Enterprise Help Desk Hub</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- أضف هذا السكربت في جميع صفحات HTML -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+</head>
+<body>
+ <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon">
+                    <i class="fas fa-crown"></i>
+                    <span>Xceed<span class="text-accent">Hub</span></span>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Dashboard</a></li>
+                    <li class="nav-item" id="ticketsNavItem"><a class="nav-link" href="tickets.html">Tickets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="links.html">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="it-general.html">IT Guide</a></li>
+                    <li class="nav-item"><a class="nav-link " href="exit-center.html">Exit Center</a></li>
+                </ul>
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="globalSearch" placeholder="Search..." class="search-input">
+                    </div>
+                    <button class="theme-toggle" id="darkModeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="user-menu">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle"></i> <span id="userName">Loading...</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><span class="dropdown-item-text" id="userRole">Role: User</span></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="change-password.html"><i class="fas fa-key me-1"></i> Change Password</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Enterprise Help Desk Hub</h1>
+                    <p>Centralized knowledge base for IT service management, ticketing system, and technical documentation.</p>
+                    <div class="hero-stats">
+                        <div class="stat"><i class="fas fa-ticket-alt"></i><span>4</span>Ticket Types</div>
+                        <div class="stat"><i class="fas fa-link"></i><span>20+</span>Useful Links</div>
+                        <div class="stat"><i class="fas fa-laptop-code"></i><span>12</span>Quick Scripts</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Access Cards -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Quick Access</h2>
+                    <p>Navigate to the main sections of the knowledge base</p>
+                </div>
+                <div class="cards-grid">
+                    <a href="tickets.html" class="card-link">
+                        <div class="feature-card">
+                            <div class="card-icon ticket">
+                                <i class="fas fa-ticket-alt"></i>
+                            </div>
+                            <h3>Tickets Guide</h3>
+                            <p>Create and manage support tickets with our NoSQL ticket studio</p>
+                            <span class="card-badge">12 Scripts</span>
+                        </div>
+                    </a>
+                    <a href="links.html" class="card-link">
+                        <div class="feature-card">
+                            <div class="card-icon links">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            <h3>Useful Links</h3>
+                            <p>Quick access to Service Desk, Cisco Finesse, and vendor portals</p>
+                            <span class="card-badge">20+ Links</span>
+                        </div>
+                    </a>
+                    <a href="it-general.html" class="card-link">
+                        <div class="feature-card">
+                            <div class="card-icon it">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <h3>IT General</h3>
+                            <p>Windows setup, performance tuning, and hardware troubleshooting</p>
+                            <span class="card-badge">4 Guides</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Service Desk Guidelines -->
+        <section class="section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Service Desk Guidelines</h2>
+                    <p>Standard operating procedures for incident management</p>
+                </div>
+                <div class="two-columns">
+                    <div class="info-card">
+                        <div class="info-header reported">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <h3>Reported Incidents</h3>
+                        </div>
+                        <ul class="info-list">
+                            <li><i class="fas fa-folder-open"></i><a href="file://compstor/Company/HelpDesk/Users%20Permission%20For%20Creating%20Incidents">Open HelpDesk folder</a></li>
+                            <li><i class="fas fa-check-circle"></i>Select correct category and write clear description</li>
+                            <li><i class="fas fa-clock"></i>Follow up daily on incidents transferred to other teams</li>
+                            <li><i class="fas fa-user-check"></i>Manager approval required for hardware changes and new access</li>
+                            <li><i class="fas fa-tag"></i>Label CPUs with incident number and seat before repair</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-header closed">
+                            <i class="fas fa-check-double"></i>
+                            <h3>Closed Incidents</h3>
+                        </div>
+                        <ul class="info-list">
+                            <li><i class="fas fa-clipboard-list"></i>Document full troubleshooting steps before closing</li>
+                            <li><i class="fas fa-check"></i>If resolved without action: <strong>Solved with No Action Taken</strong></li>
+                            <li><i class="fas fa-exchange-alt"></i>When closed by other departments, select appropriate transferred area</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-header escalation">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Escalation Rules</h3>
+                        </div>
+                        <ul class="info-list">
+                            <li><i class="fas fa-calendar-week"></i>Window: Sun-Thu, 08:00-16:00</li>
+                            <li><i class="fas fa-hourglass-half"></i>Set status to <strong>Awaiting Vendor</strong></li>
+                            <li><i class="fas fa-info-circle"></i>Include: serial, model, issue, charger status, dates, user details</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-header vendor">
+                            <i class="fas fa-phone-alt"></i>
+                            <h3>Vendor Contacts</h3>
+                        </div>
+                        <div class="vendor-table">
+                            <div class="vendor-row"><span>Eng. Hany Es7a2</span><span>01116660019</span></div>
+                            <div class="vendor-row"><span>Eng. Milad</span><span>01144146205</span></div>
+                            <div class="vendor-row"><span>Hotline</span><span>33045457 / 33466753</span></div>
+                            <div class="vendor-row"><span>Christen (Printy)</span><span>01221215035</span></div>
+                            <div class="vendor-row"><span>Milad (Printy)</span><span>01008967696</span></div>
+                            <div class="vendor-row"><span>Customer Services</span><span>01200155006</span></div>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-header special">
+                            <i class="fas fa-star-of-life"></i>
+                            <h3>Special Cases</h3>
+                        </div>
+                        <ul class="info-list">
+                            <li><i class="fas fa-home"></i>WFH: specify group or individual</li>
+                            <li><i class="fas fa-print"></i>Rented printers: escalate same day</li>
+                            <li><i class="fas fa-shield-alt"></i>Policy violations: notify Security within 2 weeks</li>
+                            <li><i class="fas fa-database"></i>Bulk password reset >15 users: manager approval</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-header notes">
+                            <i class="fas fa-sticky-note"></i>
+                            <h3>Important Notes</h3>
+                        </div>
+                        <ul class="info-list">
+                            <li><i class="fas fa-ban"></i>Do not assign Down Cases to BR team</li>
+                            <li><i class="fas fa-paperclip"></i>Always attach SLA record</li>
+                            <li><i class="fas fa-file-alt"></i>Attach escalation form for communication incidents</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Device Management Cycles -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Device Management Cycles</h2>
+                    <p>Standardized process for hardware lifecycle management</p>
+                </div>
+                <div class="cycles-grid">
+                    <div class="cycle-card">
+                        <div class="cycle-number">01</div>
+                        <h3>Preparation</h3>
+                        <ul>
+                            <li>Group Accounts: Obtain SD Support approval</li>
+                            <li>Non-Group Accounts: Verify asset request</li>
+                        </ul>
+                        <a href="\\10.47.0.95\source$\Knowledge Share Mails files and archive\Knowledge Share video\Acronis True Image recovery by khalifa.mp4" target="_blank" class="cycle-link">
+                            <i class="fas fa-video"></i> Deploy Image via Acronis
+                        </a>
+                    </div>
+                    <div class="cycle-card">
+                        <div class="cycle-number">02</div>
+                        <h3>Moving & Tracking</h3>
+                        <ul>
+                            <li>Open incident for device transfer</li>
+                            <li>Label with incident number and issue</li>
+                        </ul>
+                    </div>
+                    <div class="cycle-card">
+                        <div class="cycle-number">03</div>
+                        <h3>Receipt & Acceptance</h3>
+                        <ul>
+                            <li>Verify asset request or email</li>
+                            <li>WFH: accept with documentation</li>
+                            <li>Obtain signature and photos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Xceed Enterprise Help Desk Hub | All rights reserved</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Scripts -->
+    <script src="js/supabase-config.js"></script>
+    <script src="js/supabase-auth.js"></script>
+    <script src="js/supabase-tickets.js"></script>
+    <script src="js/supabase-assets.js"></script>
+    <script src="js/script.js"></script></body>
+</html>

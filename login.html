@@ -468,7 +468,7 @@
                         
                         setTimeout(function() {
                             if (result.mustChangePassword) {
-                                window.location.href = 'change-password.html';
+                                window.location.href = 'Change-Password.html';
                             } else {
                                 window.location.href = 'index.html';
                             }
@@ -493,7 +493,7 @@
         if (typeof isAuthenticated === 'function' && isAuthenticated()) {
             const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
             if (user && user.mustChangePassword) {
-                window.location.href = 'ChangePassword.html';
+                window.location.href = 'Change-Password.html';
             } else if (user) {
                 window.location.href = 'index.html';
             }
